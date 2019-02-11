@@ -10,12 +10,14 @@ export class AuthGuard implements CanActivate {
     constructor(private authService: AuthService, private router: Router) {
     }
 
-    canActivate(next: ActivatedRouteSnapshot,state: RouterStateSnapshot): boolean {
+    canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         let url: string = state.url;
         return this.checkLogin(url);
     }
 
-    canActivatChild(route:ActivatedRouteSnapshot, state:)
+    canActivatChild(router: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        return this.canActivate(router, state);
+    }
 
 
     private checkLogin(url: string): boolean {
