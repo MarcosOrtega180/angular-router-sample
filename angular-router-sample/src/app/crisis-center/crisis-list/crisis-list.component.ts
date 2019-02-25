@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
-import {Crisis} from "../crisis";
-import {CrisisService} from "../crisis.service";
-import {ActivatedRoute} from "@angular/router";
-import {switchMap} from "rxjs/operators";
+import { Component, OnInit }  from '@angular/core';
+import { ActivatedRoute }     from '@angular/router';
+
+import { CrisisService }  from '../crisis.service';
+import { Crisis }         from '../crisis';
+import { Observable }     from 'rxjs';
+import { switchMap }      from 'rxjs/operators';
 
 @Component({
     selector: 'app-crisis-list',
@@ -11,16 +12,13 @@ import {switchMap} from "rxjs/operators";
     styleUrls: ['./crisis-list.component.css']
 })
 export class CrisisListComponent implements OnInit {
-
-
     crises$: Observable<Crisis[]>;
     selectedId: number;
 
     constructor(
         private service: CrisisService,
         private route: ActivatedRoute
-    ) {
-    }
+    ) {}
 
     ngOnInit() {
         this.crises$ = this.route.paramMap.pipe(
@@ -30,5 +28,11 @@ export class CrisisListComponent implements OnInit {
             })
         );
     }
-
 }
+
+
+/*
+Copyright Google LLC. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/

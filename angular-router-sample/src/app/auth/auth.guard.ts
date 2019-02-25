@@ -1,33 +1,61 @@
-import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {AuthService} from "./auth.service";
+import { Injectable }       from '@angular/core';
+import {
+    CanActivate, Router,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+    CanActivateChild,
+    NavigationExtras,
+    CanLoad, Route
+}                           from '@angular/router';
+import { AuthService }      from './auth.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
-    constructor(private authService: AuthService, private router: Router) {
-    }
+export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
+    constructor(private authService: AuthService, private router: Router) {}
 
-    canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         let url: string = state.url;
+
         return this.checkLogin(url);
     }
 
-    canActivatChild(router: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.canActivate(router, state);
+    canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+        return this.canActivate(route, state);
     }
 
+    canLoad(route: Route): boolean {
+        let url = `/${route.path}`;
 
-    private checkLogin(url: string): boolean {
-        if (this.authService.isLoggedIn) {
-            return true;
-        }
-        //Store the attempted URL for redirecting
+        return this.checkLogin(url);
+    }
+
+    checkLogin(url: string): boolean {
+        if (this.authService.isLoggedIn) { return true; }
+
+        // Store the attempted URL for redirecting
         this.authService.redirectUrl = url;
-        //Navigate to the login page with extras
-        this.router.navigate(['/login']);
+
+        // Create a dummy session id
+        let sessionId = 123456789;
+
+        // Set our navigation extras object
+        // that contains our global query params and fragment
+        let navigationExtras: NavigationExtras = {
+            queryParams: { 'session_id': sessionId },
+            fragment: 'anchor'
+        };
+
+        // Navigate to the login page with extras
+        this.router.navigate(['/login'], navigationExtras);
         return false;
     }
 }
+
+
+/*
+Copyright Google LLC. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/

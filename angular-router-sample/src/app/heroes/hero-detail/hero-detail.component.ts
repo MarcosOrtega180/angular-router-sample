@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Hero} from '../hero';
-import {ActivatedRoute, ParamMap, Router} from "@angular/router";
-import {HeroService} from "../hero.service";
-import {switchMap} from "rxjs/operators";
-import {Observable} from "rxjs";
+import { switchMap } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable } from 'rxjs';
 
+import { HeroService }  from '../hero.service';
+import { Hero } from '../hero';
 
 @Component({
     selector: 'app-hero-detail',
@@ -12,15 +12,13 @@ import {Observable} from "rxjs";
     styleUrls: ['./hero-detail.component.css']
 })
 export class HeroDetailComponent implements OnInit {
-
     hero$: Observable<Hero>;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private service: HeroService
-    ) {
-    }
+    ) {}
 
     ngOnInit() {
         this.hero$ = this.route.paramMap.pipe(
@@ -29,14 +27,18 @@ export class HeroDetailComponent implements OnInit {
         );
     }
 
-
     gotoHeroes(hero: Hero) {
         let heroId = hero ? hero.id : null;
         // Pass along the hero id if available
         // so that the HeroList component can select that hero.
         // Include a junk 'foo' property for fun.
-        this.router.navigate(['/heroes', { id: heroId, foo: 'foo', another:'propiedad' }]);
-
+        this.router.navigate(['/superheroes', { id: heroId, foo: 'foo' }]);
     }
-
 }
+
+
+/*
+Copyright Google LLC. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/

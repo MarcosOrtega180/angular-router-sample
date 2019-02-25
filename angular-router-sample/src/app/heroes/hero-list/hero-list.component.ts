@@ -1,44 +1,40 @@
-import {Component, OnInit} from '@angular/core';
+// TODO: Feature Componetized like CrisisCenter
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {Hero} from '../hero';
-import {HeroService} from '../hero.service';
-import {ActivatedRoute} from "@angular/router";
-import {Observable} from "rxjs";
-import {switchMap} from "rxjs/operators";
+import { HeroService }  from '../hero.service';
+import { Hero } from '../hero';
 
 @Component({
-    selector: 'app-heroes-list',
-    templateUrl: 'hero-list.component.html',
+    selector: 'app-hero-list',
+    templateUrl: './hero-list.component.html',
     styleUrls: ['./hero-list.component.css']
 })
 export class HeroListComponent implements OnInit {
-
-    selectedHero: Hero;
-
-    heroes: Hero[];
     heroes$: Observable<Hero[]>;
     selectedId: number;
 
     constructor(
         private service: HeroService,
-        private route:ActivatedRoute
-    ) {
-    }
+        private route: ActivatedRoute
+    ) {}
 
     ngOnInit() {
         this.heroes$ = this.route.paramMap.pipe(
-            switchMap(params=>{
+            switchMap(params => {
                 // (+) before `params.get()` turns the string into a number
-                this.selectedId=+params.get('id');
+                this.selectedId = +params.get('id');
                 return this.service.getHeroes();
             })
         );
     }
-
-    onSelect(hero: Hero): void {
-        this.selectedHero = hero;
-    }
-
-
-
 }
+
+
+/*
+Copyright Google LLC. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/

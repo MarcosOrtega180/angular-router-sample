@@ -1,22 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import {Observable} from "rxjs";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Crisis} from "../crisis";
+import { Component, OnInit, HostBinding } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+
+import { Crisis }         from '../crisis';
+import { DialogService }  from '../../dialog.service';
 
 @Component({
-  selector: 'app-crisis-detail',
-  templateUrl: './crisis-detail.component.html',
-  styleUrls: ['./crisis-detail.component.css']
+    selector: 'app-crisis-detail',
+    templateUrl: './crisis-detail.component.html',
+    styleUrls: ['./crisis-detail.component.css']
 })
 export class CrisisDetailComponent implements OnInit {
-
     crisis: Crisis;
     editName: string;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        // public dialogService: DialogService
+        public dialogService: DialogService
     ) {}
 
     ngOnInit() {
@@ -43,8 +44,7 @@ export class CrisisDetailComponent implements OnInit {
         }
         // Otherwise ask the user with the dialog service and return its
         // observable which resolves to true or false when the user decides
-        // return this.dialogService.confirm('Discard changes?');
-        return null;
+        return this.dialogService.confirm('Discard changes?');
     }
 
     gotoCrises() {
@@ -56,3 +56,10 @@ export class CrisisDetailComponent implements OnInit {
         this.router.navigate(['../', { id: crisisId, foo: 'foo' }], { relativeTo: this.route });
     }
 }
+
+
+/*
+Copyright Google LLC. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/

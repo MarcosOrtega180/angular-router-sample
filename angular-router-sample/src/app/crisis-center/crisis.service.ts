@@ -1,18 +1,19 @@
+import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
-import {MessageService} from "../message.service";
-import {BehaviorSubject} from "rxjs";
-import {Crisis} from "./crisis";
+import { MessageService } from '../message.service';
+import { Crisis } from './crisis';
 import {CRISES} from "./mock-crisises";
-import {map} from "rxjs/operators";
+
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class CrisisService {
-
-
     static nextCrisisId = 100;
     private crises$: BehaviorSubject<Crisis[]> = new BehaviorSubject<Crisis[]>(CRISES);
+
     constructor(private messageService: MessageService) { }
 
     getCrises() { return this.crises$; }
@@ -32,3 +33,10 @@ export class CrisisService {
         }
     }
 }
+
+
+/*
+Copyright Google LLC. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/
